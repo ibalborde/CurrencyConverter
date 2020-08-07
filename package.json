@@ -6,9 +6,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint" : "eslint ."
+    "lint": "eslint ."
   },
   "dependencies": {
+    "date-fns": "^2.15.0",
     "expo": "~38.0.8",
     "expo-status-bar": "^1.0.2",
     "react": "~16.11.0",
