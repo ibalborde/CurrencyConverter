@@ -1,10 +1,11 @@
-import React from 'react'
-import { View, StyleSheet, StatusBar, Image, Dimensions, Text } from 'react-native'
+import React, { useState } from 'react'
+import { View, StyleSheet, StatusBar, Image, Dimensions, Text, ScrollView} from 'react-native'
 import { format } from 'date-fns'
 
 import colors from "../constants/colors"
 import { ConversionInput } from '../components/ConversionInput'
 import { Button } from '../components/Button'
+import { keyboardSpacer, KeyboardSpacer } from '../components/KeyboardSpacer'
 
 const screen = Dimensions.get("window")
 
@@ -12,7 +13,9 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.blue,
         flex: 1,
-        justifyContent: "center"
+    },
+    content: {
+      paddingTop: screen.height * 0.2
     },
     logoContainer: {
         alignItems: "center",
@@ -44,47 +47,58 @@ const styles = StyleSheet.create({
 })
 
 export default () => {
+
   const baseCurrency = 'USD'
   const quoteCurrency = 'GBP'
   const conversionRate = 0.8345
   const date = new Date()
+  const [scrollEnabled, setScrollEnabled] = useState(false)
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.blue} />
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../assets/images/background.png")}
-          style={styles.logoBackground}
-          resizeMode="contain"
-        />
-        <Image
-          source={require("../assets/images/logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
+      <ScrollView scrollEnabled={scrollEnabled}>
+        <StatusBar barStyle="light-content" backgroundColor={colors.blue} />
+        <View style={styles.content}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../assets/images/background.png")}
+              style={styles.logoBackground}
+              resizeMode="contain"
+            />
+            <Image
+              source={require("../assets/images/logo.png")}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
 
-      <Text style={styles.textHeader}>Currency Converter</Text>
+          <Text style={styles.textHeader}>Currency Converter</Text>
 
-      <ConversionInput
-        text={baseCurrency}
-        value="123"
-        onButtonPress={() => alert("todo")}
-        onChangeText={text => console.log("text", text)}
-        keyboardType="numeric"
-      />
-      <ConversionInput
-        text={quoteCurrency}
-        value="123"
-        onButtonPress={() => alert("todo")}
-        editable={false}
-      />
+          <ConversionInput
+            text={baseCurrency}
+            value="123"
+            onButtonPress={() => alert("todo")}
+            onChangeText={(text) => console.log("text", text)}
+            keyboardType="numeric"
+          />
+          <ConversionInput
+            text={quoteCurrency}
+            value="123"
+            onButtonPress={() => alert("todo")}
+            editable={false}
+          />
 
-      <Text style={styles.text}>
-        {`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${format(date, 'MMMM do, yyyy')}.`}
-      </Text>
+          <Text style={styles.text}>
+            {`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${format(
+              date,
+              "MMMM do, yyyy"
+            )}.`}
+          </Text>
 
-      <Button text="Reverse Currencies" onPress={() => alert("todo")} />
+          <Button text="Reverse Currencies" onPress={() => alert("todo")} />
+          <KeyboardSpacer onToggle={(keyboardIsVisible) => setScrollEnabled(keyboardIsVisible)} />
+        </View>
+      </ScrollView>
     </View>
   );
 };
